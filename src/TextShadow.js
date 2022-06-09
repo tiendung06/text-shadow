@@ -49,12 +49,6 @@ const TextShadow = () => {
     setShadow([...shadow, newShadow]);
   };
 
-  const handleDeleteShadow = ({ index }) => {
-    const newShadow = [...shadow];
-    newShadow.splice(index, 1);
-    setShadow(newShadow);
-  };
-
   const handleChangeValueShadow = (e) => {
     const newShadow = `rgba(${hexToRgb(shadowColor).r},${
       hexToRgb(shadowColor).g
@@ -128,15 +122,57 @@ const TextShadow = () => {
                   select === index ? "bg-[#5C6AC4] text-white" : ""
                 }`}
                 key={index}
-                onClick={() => {
-                  setSelect(index);
-                }}
               >
-                <p index={index}>{item}</p>
+                <p
+                  onClick={() => {
+                    setSelect(index);
+                  }}
+                  index={index}
+                >
+                  {item}
+                </p>
+                {index !== 0 ? (
+                  <p
+                    className="cursor-pointer"
+                    onClick={() => {
+                      const newElement1 = shadow[index - 1];
+                      const newElement2 = shadow[index];
+                      shadow[index - 1] = newElement2;
+                      shadow[index] = newElement1;
+                      setShadow((shadow) => shadow);
+                      setSelect(index - 1);
+                    }}
+                  >
+                    Up
+                  </p>
+                ) : (
+                  ""
+                )}
+                {index !== shadow.length - 1 ? (
+                  <p
+                    className="cursor-pointer"
+                    onClick={() => {
+                      const newElement1 = shadow[index + 1];
+                      const newElement2 = shadow[index];
+                      shadow[index + 1] = newElement2;
+                      shadow[index] = newElement1;
+                      setShadow((shadow) => shadow);
+                      setSelect(index + 1);
+                    }}
+                  >
+                    Down
+                  </p>
+                ) : (
+                  ""
+                )}
                 {shadow.length > 1 ? (
                   <p
                     className="text-red-500 cursor-pointer"
-                    onClick={handleDeleteShadow}
+                    onClick={() => {
+                      const newShadow = [...shadow];
+                      newShadow.splice(index, 1);
+                      setShadow(newShadow);
+                    }}
                   >
                     Delete
                   </p>
